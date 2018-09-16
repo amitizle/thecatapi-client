@@ -2,7 +2,6 @@ package thecatapi
 
 import (
 	"encoding/json"
-	"fmt"
 	http "github.com/amitizle/thecatapi_client/internal/http_client"
 )
 
