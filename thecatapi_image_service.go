@@ -3,6 +3,8 @@ package thecatapi
 import (
 	"encoding/json"
 	http "github.com/amitizle/thecatapi_client/internal/http_client"
+	"strconv"
+	"strings"
 )
 
 type ImageService struct {
@@ -44,8 +46,9 @@ func NewImageService(client *Client) (*ImageService, error) {
 func (imageService *ImageService) Search(mimeTypes []string, format string, limit int) ([]SearchResponse, error) {
 	searchRequest := imageService.client.http.NewRequest()
 	searchRequest.Path = "/v1/images/search"
-	searchRequest.QueryParams["limit"] = string(limit) // casting due to http client limitation
-	searchRequest.QueryParams["format"] = format       // json / src TODO currently supporting only json
+	searchRequest.QueryParams["limit"] = strconv.Itoa(limit) // casting due to http client limitation
+	searchRequest.QueryParams["format"] = format             // json / src TODO currently supporting only json
+	searchRequest.QueryParams["mime_types"] = strings.Join(mimeTypes, ",")
 	searchResponse, err := searchRequest.Get()
 	if err != nil {
 		return []SearchResponse{}, err
